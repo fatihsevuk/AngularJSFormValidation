@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        input.ng-invalid {
+            background-color: pink;
+        }
+
+        input.ng-valid {
+            background-color: lightgreen;
+        }
+
+        form.ng-pristine {
+            background-color: lightblue;
+        }
+
+        form.ng-dirty {
+            background-color: pink;
+        }
+
+
+    </style>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+    <form name="myForm">
+
+        Adı:<input name="myName" type="text" ng-model="user.ad" required>
+        <span ng-show="myForm.myName.$touched && myForm.myName.$invalid">isim yazmak zorundasın</span>
+        <br>
+        Soyadı:<input name="mySurName" type="text" ng-model="user.soyad" required>
+        <span ng-show="myForm.mySurName.$touched && myForm.mySurName.$invalid">soyisim yazmak zorundasın</span>
+        <br>
+        Email:<input name="myEmail" type="email" ng-model="user.email" required>
+
+        <br>
+
+        <button ng-click="gecerlilik()">gecerlilik için tıkla</button>
+
+        <div ng-show="gecerli">
+
+            <h1>isim geçerlilik:{{myForm.myName.$valid}}</h1>
+            <h1>soyisim geçerlilik:{{myForm.mySurName.$valid}}</h1>
+            <h1>email geçerlilik:{{myForm.myEmail.$valid}}</h1>
+
+        </div>
+
+        <button ng-click="temizle()">temizle</button>
+        <button ng-click="reset()">reset</button>
+        <input type="submit" ng-click="kaydet()" ng-disabled="myForm.myName.$dirty && myForm.myName.$invalid || myForm.mySurName.$dirty && myForm.mySurName.$invalid ||
+myForm.myEmail.$dirty && myForm.myEmail.$invalid">
+
+
+    </form>
+
+    <div ng-show="kayit">
+
+        <h1>ADI:{{user.ad}}</h1>
+        <h1>SOYADI:{{user.soyad}}</h1>
+        <h1>EMAİL:{{user.email}}</h1>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope) {
+
+        $scope.gecerli = false;
+        $scope.kayit = false;
+
+
+        $scope.default = {ad: "fatih", soyad: "sevük", email: "fatih@fatih.com"};
+        $scope.reset = function () {
+            $scope.user = angular.copy($scope.default);
+
+        };
+        $scope.temizle = function () {
+            $scope.user = {ad: "", soyad: "", email: ""}
+        };
+
+        $scope.kaydet = function () {
+            $scope.kayit = !$scope.kayit;
+        };
+
+        $scope.gecerlilik = function () {
+
+            $scope.gecerli = !$scope.gecerli;
+        };
+
+
+    });
+
+</script>
+
+
+</body>
+</html>
